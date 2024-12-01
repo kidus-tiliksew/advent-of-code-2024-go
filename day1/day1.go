@@ -10,9 +10,7 @@ import (
 )
 
 func Part1(input io.Reader) (int, error) {
-	scanner := bufio.NewScanner(input)
-
-	left, right, err := GetLeftRightCols(scanner)
+	left, right, err := GetLeftRightCols(input)
 	if err != nil {
 		return 0, err
 	}
@@ -21,7 +19,6 @@ func Part1(input io.Reader) (int, error) {
 	slices.Sort(right)
 
 	ans := 0
-
 	for i, e := range left {
 		ans += abs(e - right[i])
 	}
@@ -30,9 +27,7 @@ func Part1(input io.Reader) (int, error) {
 }
 
 func Part2(input io.Reader) (int, error) {
-	scanner := bufio.NewScanner(input)
-
-	left, right, err := GetLeftRightCols(scanner)
+	left, right, err := GetLeftRightCols(input)
 	if err != nil {
 		return 0, err
 	}
@@ -50,11 +45,17 @@ func Part2(input io.Reader) (int, error) {
 	return ans, nil
 }
 
-func GetLeftRightCols(scanner *bufio.Scanner) ([]int, []int, error) {
+func GetLeftRightCols(input io.Reader) ([]int, []int, error) {
+	scanner := bufio.NewScanner(input)
+
 	left, right := []int{}, []int{}
 	for scanner.Scan() {
 		text := scanner.Text()
 		fields := strings.Fields(text)
+
+		if len(fields) != 2 {
+			return nil, nil, fmt.Errorf("invalid input format: %s", text)
+		}
 
 		i, err := strconv.Atoi(fields[0])
 		if err != nil {
