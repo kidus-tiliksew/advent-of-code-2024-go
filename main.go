@@ -7,6 +7,7 @@ import (
 	"github.com/kidus-tiliksew/advent-of-code-2024-go/day1"
 	"github.com/kidus-tiliksew/advent-of-code-2024-go/day2"
 	"github.com/kidus-tiliksew/advent-of-code-2024-go/day3"
+	"github.com/kidus-tiliksew/advent-of-code-2024-go/day4"
 )
 
 func main() {
@@ -64,6 +65,25 @@ func main() {
 
 		res, err = day3.Part2(input)
 		handleError(err, ErrorContext{"3", "2", ""})
-		log.Printf("day 2: part 3: %d", res)
+		log.Printf("day 3: part 3: %d", res)
+	}
+
+	// Day 4
+	{
+		// Part 1
+		input, err := os.Open("./day4/input.txt")
+		handleError(err, ErrorContext{"4", "1", "could not open input"})
+
+		res, err := day4.Part1(input)
+		handleError(err, ErrorContext{"4", "1", ""})
+		log.Printf("day 4: part 1: %d", res)
+
+		// // Part 2
+		input, err = os.Open("./day4/input.txt")
+		handleError(err, ErrorContext{"4", "2", "could not open input"})
+
+		res, err = day4.Part2(input)
+		handleError(err, ErrorContext{"4", "2", ""})
+		log.Printf("day 4: part 3: %d", res)
 	}
 }
