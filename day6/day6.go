@@ -60,19 +60,7 @@ func Part1(input io.Reader) (int, error) {
 		}
 
 		for matrix[nextRow][nextCol] == '#' {
-			if dir[0] == -1 && dir[1] == 0 {
-				// Move right
-				dir = []int{0, 1}
-			} else if dir[0] == 0 && dir[1] == -1 {
-				// Move up
-				dir = []int{-1, 0}
-			} else if dir[0] == 0 && dir[1] == 1 {
-				// Move down
-				dir = []int{1, 0}
-			} else if dir[0] == 1 && dir[1] == 0 {
-				// Move left
-				dir = []int{0, -1}
-			}
+			dir = move(dir)
 
 			nextRow, nextCol = row+dir[0], col+dir[1]
 			if !isValid(nextRow, nextCol) {
@@ -86,6 +74,11 @@ func Part1(input io.Reader) (int, error) {
 	dfs(startingRow, startingCol, startingDir)
 
 	return ans, nil
+}
+
+type Location struct {
+	row, col  int
+	direction string
 }
 
 func Part2(input io.Reader) (int, error) {
@@ -129,14 +122,14 @@ func Part2(input io.Reader) (int, error) {
 	}
 
 	ans := 0
-	var dfs func(int, int, []int, map[*rune]int)
-	dfs = func(row, col int, dir []int, seen map[*rune]int) {
-		seen[&matrix[row][col]]++
-
-		if seen[&matrix[row][col]] > 100 {
+	var dfs func(int, int, []int, map[Location]bool)
+	dfs = func(row, col int, dir []int, seen map[Location]bool) {
+		if seen[Location{row: row, col: col, direction: getDirectionStr(dir)}] {
 			ans++
 			return
 		}
+
+		seen[Location{row: row, col: col, direction: getDirectionStr(dir)}] = true
 
 		nextRow, nextCol := row+dir[0], col+dir[1]
 		if !isValid(nextRow, nextCol) {
@@ -144,19 +137,7 @@ func Part2(input io.Reader) (int, error) {
 		}
 
 		for matrix[nextRow][nextCol] == '#' || matrix[nextRow][nextCol] == 'O' {
-			if dir[0] == -1 && dir[1] == 0 {
-				// Move right
-				dir = []int{0, 1}
-			} else if dir[0] == 0 && dir[1] == -1 {
-				// Move up
-				dir = []int{-1, 0}
-			} else if dir[0] == 0 && dir[1] == 1 {
-				// Move down
-				dir = []int{1, 0}
-			} else if dir[0] == 1 && dir[1] == 0 {
-				// Move left
-				dir = []int{0, -1}
-			}
+			dir = move(dir)
 
 			nextRow, nextCol = row+dir[0], col+dir[1]
 			if !isValid(nextRow, nextCol) {
@@ -173,7 +154,7 @@ func Part2(input io.Reader) (int, error) {
 				continue
 			}
 
-			seen := make(map[*rune]int)
+			seen := make(map[Location]bool)
 			curr := matrix[row][col]
 			matrix[row][col] = '#'
 			dfs(startingRow, startingCol, startingDir, seen)
@@ -182,4 +163,38 @@ func Part2(input io.Reader) (int, error) {
 	}
 
 	return ans, nil
+}
+
+func move(dir []int) []int {
+	newDir := []int{}
+
+	if dir[0] == -1 && dir[1] == 0 {
+		// Move right
+		newDir = []int{0, 1}
+	} else if dir[0] == 0 && dir[1] == -1 {
+		// Move up
+		newDir = []int{-1, 0}
+	} else if dir[0] == 0 && dir[1] == 1 {
+		// Move down
+		newDir = []int{1, 0}
+	} else if dir[0] == 1 && dir[1] == 0 {
+		// Move left
+		newDir = []int{0, -1}
+	}
+
+	return newDir
+}
+
+func getDirectionStr(dir []int) string {
+	if dir[0] == -1 && dir[1] == 0 {
+		return "^"
+	} else if dir[0] == 0 && dir[1] == -1 {
+		return "<"
+	} else if dir[0] == 0 && dir[1] == 1 {
+		return ">"
+	} else if dir[0] == 1 && dir[1] == 0 {
+		return "v"
+	}
+
+	return ""
 }
