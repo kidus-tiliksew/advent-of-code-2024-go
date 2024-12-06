@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+	"fmt"
 	"log"
 	"os"
 
@@ -10,120 +12,112 @@ import (
 	"github.com/kidus-tiliksew/advent-of-code-2024-go/day4"
 	"github.com/kidus-tiliksew/advent-of-code-2024-go/day5"
 	"github.com/kidus-tiliksew/advent-of-code-2024-go/day6"
+	"github.com/urfave/cli/v3"
 )
 
 func main() {
-	// Day 1
-	{
-		// Part 1
-		input, err := os.Open("./day1/input.txt")
-		handleError(err, ErrorContext{"1", "1", "could not open input"})
+	cmd := &cli.Command{
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:  "input",
+				Usage: "input file path",
+			},
+			&cli.StringFlag{
+				Name:  "day",
+				Usage: "day number",
+			},
+		},
+		Action: func(ctx context.Context, cmd *cli.Command) error {
+			if cmd.String("input") == "" {
+				return fmt.Errorf("input file path is required")
+			}
 
-		res, err := day1.Part1(input)
-		handleError(err, ErrorContext{"1", "1", ""})
-		log.Printf("day 1: part 1: %d", res)
+			if cmd.String("day") == "" {
+				return fmt.Errorf("day number is required")
+			}
 
-		// Part 2
-		input, err = os.Open("./day1/input.txt")
-		handleError(err, ErrorContext{"1", "2", "could not open input"})
+			input := cmd.String("input")
+			day := cmd.String("day")
 
-		res, err = day1.Part2(input)
-		handleError(err, ErrorContext{"1", "2", ""})
-		log.Printf("day 1: part 2: %d", res)
+			file, err := os.Open(input)
+			if err != nil {
+				return fmt.Errorf("could not open input: %w", err)
+			}
+			handleError(err, ErrorContext{day, day, "could not open input"})
+
+			switch day {
+			case "1":
+				res, err := day1.Part1(file)
+				handleError(err, ErrorContext{day, "1", ""})
+				log.Printf("day 1: part 1: %d", res)
+
+				file, _ := os.Open(input)
+
+				res, err = day1.Part2(file)
+				handleError(err, ErrorContext{day, "2", ""})
+				log.Printf("day 1: part 2: %d", res)
+			case "2":
+				res, err := day2.Part1(file)
+				handleError(err, ErrorContext{day, "1", ""})
+				log.Printf("day 2: part 1: %d", res)
+
+				file, _ := os.Open(input)
+
+				res, err = day2.Part2(file)
+				handleError(err, ErrorContext{day, "2", ""})
+				log.Printf("day 2: part 2: %d", res)
+
+			case "3":
+				res, err := day3.Part1(file)
+				handleError(err, ErrorContext{day, "1", ""})
+				log.Printf("day 3: part 1: %d", res)
+
+				file, _ := os.Open(input)
+
+				res, err = day3.Part2(file)
+				handleError(err, ErrorContext{day, "2", ""})
+				log.Printf("day 3: part 2: %d", res)
+
+			case "4":
+				res, err := day4.Part1(file)
+				handleError(err, ErrorContext{day, "1", ""})
+				log.Printf("day 4: part 1: %d", res)
+
+				file, _ := os.Open(input)
+
+				res, err = day4.Part2(file)
+				handleError(err, ErrorContext{day, "2", ""})
+				log.Printf("day 4: part 2: %d", res)
+
+			case "5":
+				res, err := day5.Part1(file)
+				handleError(err, ErrorContext{day, "1", ""})
+				log.Printf("day 5: part 1: %d", res)
+
+				file, _ := os.Open(input)
+
+				res, err = day5.Part2(file)
+				handleError(err, ErrorContext{day, "2", ""})
+				log.Printf("day 5: part 2: %d", res)
+
+			case "6":
+				res, err := day6.Part1(file)
+				handleError(err, ErrorContext{day, "1", ""})
+				log.Printf("day 6: part 1: %d", res)
+
+				file, _ := os.Open(input)
+
+				res, err = day6.Part2(file)
+				handleError(err, ErrorContext{day, "2", ""})
+				log.Printf("day 6: part 2: %d", res)
+			default:
+				return fmt.Errorf("day %s is not implemented", day)
+			}
+			return nil
+		},
 	}
 
-	// Day 2
-	{
-		// Part 1
-		input, err := os.Open("./day2/input.txt")
-		handleError(err, ErrorContext{"2", "1", "could not open input"})
-
-		res, err := day2.Part1(input)
-		handleError(err, ErrorContext{"2", "1", ""})
-		log.Printf("day 2: part 1: %d", res)
-
-		// Part 2
-		input, err = os.Open("./day2/input.txt")
-		handleError(err, ErrorContext{"2", "2", "could not open input"})
-
-		res, err = day2.Part2(input)
-		handleError(err, ErrorContext{"2", "2", ""})
-		log.Printf("day 2: part 2: %d", res)
-	}
-
-	// Day 3
-	{
-		// Part 1
-		input, err := os.Open("./day3/input.txt")
-		handleError(err, ErrorContext{"3", "1", "could not open input"})
-
-		res, err := day3.Part1(input)
-		handleError(err, ErrorContext{"3", "1", ""})
-		log.Printf("day 3: part 1: %d", res)
-
-		// Part 2
-		input, err = os.Open("./day3/input.txt")
-		handleError(err, ErrorContext{"3", "2", "could not open input"})
-
-		res, err = day3.Part2(input)
-		handleError(err, ErrorContext{"3", "2", ""})
-		log.Printf("day 3: part 3: %d", res)
-	}
-
-	// Day 4
-	{
-		// Part 1
-		input, err := os.Open("./day4/input.txt")
-		handleError(err, ErrorContext{"4", "1", "could not open input"})
-
-		res, err := day4.Part1(input)
-		handleError(err, ErrorContext{"4", "1", ""})
-		log.Printf("day 4: part 1: %d", res)
-
-		// Part 2
-		input, err = os.Open("./day4/input.txt")
-		handleError(err, ErrorContext{"4", "2", "could not open input"})
-
-		res, err = day4.Part2(input)
-		handleError(err, ErrorContext{"4", "2", ""})
-		log.Printf("day 4: part 3: %d", res)
-	}
-
-	// Day 5
-	{
-		// Part 1
-		input, err := os.Open("./day5/input.txt")
-		handleError(err, ErrorContext{"5", "1", "could not open input"})
-
-		res, err := day5.Part1(input)
-		handleError(err, ErrorContext{"5", "1", ""})
-		log.Printf("day 5: part 1: %d", res)
-
-		// Part 2
-		input, err = os.Open("./day5/input.txt")
-		handleError(err, ErrorContext{"5", "2", "could not open input"})
-
-		res, err = day5.Part2(input)
-		handleError(err, ErrorContext{"5", "2", ""})
-		log.Printf("day 5: part 3: %d", res)
-	}
-
-	// Day 6
-	{
-		// Part 1
-		input, err := os.Open("./day6/input.txt")
-		handleError(err, ErrorContext{"6", "1", "could not open input"})
-
-		res, err := day6.Part1(input)
-		handleError(err, ErrorContext{"6", "1", ""})
-		log.Printf("day 5: part 1: %d", res)
-
-		// Part 2
-		input, err = os.Open("./day6/input.txt")
-		handleError(err, ErrorContext{"6", "2", "could not open input"})
-
-		res, err = day6.Part2(input)
-		handleError(err, ErrorContext{"6", "2", ""})
-		log.Printf("day 6: part 3: %d", res)
+	if err := cmd.Run(context.Background(), os.Args); err != nil {
+		log.Fatal(err)
 	}
 }
