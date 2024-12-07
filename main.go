@@ -12,6 +12,7 @@ import (
 	"github.com/kidus-tiliksew/advent-of-code-2024-go/day4"
 	"github.com/kidus-tiliksew/advent-of-code-2024-go/day5"
 	"github.com/kidus-tiliksew/advent-of-code-2024-go/day6"
+	"github.com/kidus-tiliksew/advent-of-code-2024-go/day7"
 	"github.com/urfave/cli/v3"
 )
 
@@ -110,6 +111,16 @@ func main() {
 				res, err = day6.Part2(file)
 				handleError(err, ErrorContext{day, "2", ""})
 				log.Printf("day 6: part 2: %d", res)
+			case "7":
+				res, err := day7.Part1(file)
+				handleError(err, ErrorContext{day, "1", ""})
+				log.Printf("day 7: part 1: %d", res)
+
+				file, _ := os.Open(input)
+
+				res, err = day7.Part2(file)
+				handleError(err, ErrorContext{day, "2", ""})
+				log.Printf("day 7: part 2: %d", res)
 			default:
 				return fmt.Errorf("day %s is not implemented", day)
 			}
