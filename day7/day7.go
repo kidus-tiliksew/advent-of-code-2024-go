@@ -40,8 +40,8 @@ func Part1(input io.Reader) (int64, error) {
 
 	validIndex := make(map[int]bool)
 
-	var backtrack func([]int64, int, int64, int64, int)
-	backtrack = func(numbers []int64, currIndex int, currVal int64, target int64, i int) {
+	var dfs func([]int64, int, int64, int64, int)
+	dfs = func(numbers []int64, currIndex int, currVal int64, target int64, i int) {
 		if currIndex == len(numbers) {
 			if currVal == target {
 				validIndex[i] = true
@@ -57,12 +57,12 @@ func Part1(input io.Reader) (int64, error) {
 			} else {
 				newVal = currVal * nextVal
 			}
-			backtrack(numbers, currIndex+1, newVal, target, i)
+			dfs(numbers, currIndex+1, newVal, target, i)
 		}
 	}
 
 	for i, e := range equations {
-		backtrack(e.numbers, 1, e.numbers[0], e.value, i)
+		dfs(e.numbers, 1, e.numbers[0], e.value, i)
 	}
 
 	ans := int64(0)
@@ -100,8 +100,8 @@ func Part2(input io.Reader) (int64, error) {
 
 	validIndex := make(map[int]bool)
 
-	var backtrack func([]int64, int, int64, int64, int)
-	backtrack = func(numbers []int64, currIndex int, currVal int64, target int64, i int) {
+	var dfs func([]int64, int, int64, int64, int)
+	dfs = func(numbers []int64, currIndex int, currVal int64, target int64, i int) {
 		if currIndex == len(numbers) {
 			if currVal == target {
 				validIndex[i] = true
@@ -119,12 +119,12 @@ func Part2(input io.Reader) (int64, error) {
 			} else {
 				newVal, _ = strconv.ParseInt(fmt.Sprint(currVal)+fmt.Sprint(nextVal), 10, 64)
 			}
-			backtrack(numbers, currIndex+1, newVal, target, i)
+			dfs(numbers, currIndex+1, newVal, target, i)
 		}
 	}
 
 	for i, e := range equations {
-		backtrack(e.numbers, 1, e.numbers[0], e.value, i)
+		dfs(e.numbers, 1, e.numbers[0], e.value, i)
 	}
 
 	ans := int64(0)
