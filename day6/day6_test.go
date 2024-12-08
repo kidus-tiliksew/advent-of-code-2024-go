@@ -8,8 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestPart1(t *testing.T) {
-	data := `....#.....
+var data string = `....#.....
 .........#
 ..........
 ..#.......
@@ -20,6 +19,7 @@ func TestPart1(t *testing.T) {
 #.........
 ......#...`
 
+func TestPart1(t *testing.T) {
 	res, err := day6.Part1(strings.NewReader(data))
 	if err != nil {
 		t.Fatal(err)
@@ -29,17 +29,6 @@ func TestPart1(t *testing.T) {
 }
 
 func TestPart2(t *testing.T) {
-	data := `....#.....
-.........#
-..........
-..#.......
-.......#..
-..........
-.#..^.....
-........#.
-#.........
-......#...`
-
 	res, err := day6.Part2(strings.NewReader(data))
 	if err != nil {
 		t.Fatal(err)
@@ -47,4 +36,3 @@ func TestPart2(t *testing.T) {
 
 	assert.Equal(t, 6, res)
 }
-
