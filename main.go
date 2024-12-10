@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/kidus-tiliksew/advent-of-code-2024-go/day1"
+	"github.com/kidus-tiliksew/advent-of-code-2024-go/day10"
 	"github.com/kidus-tiliksew/advent-of-code-2024-go/day2"
 	"github.com/kidus-tiliksew/advent-of-code-2024-go/day3"
 	"github.com/kidus-tiliksew/advent-of-code-2024-go/day4"
@@ -143,6 +144,16 @@ func main() {
 				res, err = day9.Part2(file)
 				handleError(err, ErrorContext{day, "2", ""})
 				log.Printf("day 9: part 2: %d", res)
+			case "10":
+				res, err := day10.Part1(file)
+				handleError(err, ErrorContext{day, "1", ""})
+				log.Printf("day 10: part 1: %d", res)
+
+				file, _ := os.Open(input)
+
+				res, err = day10.Part2(file)
+				handleError(err, ErrorContext{day, "2", ""})
+				log.Printf("day 10: part 2: %d", res)
 			default:
 				return fmt.Errorf("day %s is not implemented", day)
 			}
